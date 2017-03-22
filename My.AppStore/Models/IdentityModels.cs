@@ -1,33 +1,33 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 
 namespace My.AppStore.Models
 {
-    // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
-    public class ApplicationUser : IdentityUser
+
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity;
+    using System.Linq;
+
+    public class IdentityModels : IdentityDbContext<User>
     {
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
+        // Your context has been configured to use a 'IdentityModels' connection string from your application's
+        // configuration file (App.config or Web.config). By default, this connection string targets the
+        // 'CodingTemple.BoardGameStore.Models.IdentityModels' database on your LocalDb instance.
+        //
+        // If you wish to target a different database and/or database provider, modify the 'IdentityModels'
+        // connection string in the application configuration file.
+        public IdentityModels()
+            : base("name=AppStore")
         {
-            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
-            var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
-            // Add custom user claims here
-            return userIdentity;
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class User : IdentityUser
     {
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
-        {
-        }
-        
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
     }
 }

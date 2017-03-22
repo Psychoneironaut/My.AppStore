@@ -1,0 +1,41 @@
+﻿@model My.AppStore.Models.CartModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Cart</h2>
+<input type="hidden" value="@ViewBag.PageGenerationTime" />
+@if (TempData["AddedToCart"] != null)
+{
+    <div class="alert alert-success">
+        <p>You've added a new item to your cart.</p>
+    </div>
+}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th></th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.Product.Name</td>
+                <td>@item.Quantity</td>
+                <td><button disabled class="btn btn-default">Remove</button></td>
+                <td>@((item.Product.Price ?? 0m).ToString("C"))</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="3">Subtotal</th>
+            <th>@((Model.SubTotal ?? 0m).ToString("C"))</th>
+        </tr>
+    </tfoot>
+</table>
+@Html.ActionLink("Checkout", "Index", "Checkout", null, new { @class = "btn btn-primary" })

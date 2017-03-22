@@ -1,0 +1,19 @@
+﻿@model My.AppStore.Models.RegisterModel
+@{
+    ViewBag.Title = "Register";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.LabelFor(x => x.EmailAddress)
+    @Html.TextBoxFor(x => x.EmailAddress)
+    @Html.ValidationMessageFor(x => x.EmailAddress)
+
+    @Html.LabelFor(x => x.Password)
+    @Html.PasswordFor(x => x.Password)
+    @Html.ValidationMessageFor(x => x.Password)
+
+    <input type="submit" value="Register" />
+}

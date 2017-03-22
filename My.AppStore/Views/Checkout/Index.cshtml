@@ -1,0 +1,86 @@
+﻿@model My.AppStore.Models.CheckoutModel
+@{
+    ViewBag.Title = "Checkout";
+    var states = new List<SelectListItem>();
+
+    var countries = new List<SelectListItem>();
+}
+<h2>Checkout</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    if (!ViewContext.ViewData.ModelState.IsValid)
+    {
+        @Html.ValidationSummary(false, null, new { @class = "alert alert-danger" })
+    }
+    <div class="form-group">
+        @Html.LabelFor(x => x.ShippingAddress1, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.ShippingAddress1, new { @class = "form-control", placeholder = "Address" })
+        @Html.ValidationMessageFor(x => x.ShippingAddress1)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.ShippingAddress2, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.ShippingAddress2, new { @class = "form-control", placeholder = "Address 2" })
+        @Html.ValidationMessageFor(x => x.ShippingAddress2)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.ShippingCountry, new { @class = "control-label" })
+        @Html.DropDownListFor(x => x.ShippingCountry, countries, new { @class = "form-control", placeholder = "State" })
+        @Html.ValidationMessageFor(x => x.ShippingCountry)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.ShippingCity, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.ShippingCity, new { @class = "form-control", placeholder = "City" })
+        @Html.ValidationMessageFor(x => x.ShippingCity)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.ShippingState, new { @class = "control-label" })
+        @Html.DropDownListFor(x => x.ShippingState, states, new { @class = "form-control", placeholder = "State" })
+        @Html.ValidationMessageFor(x => x.ShippingState)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.ZipCode, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.ZipCode, new { @class = "form-control", placeholder = "Zip Code" })
+        @Html.ValidationMessageFor(x => x.ZipCode)
+    </div>
+    <input type="submit" value="Place Order" class="btn btn-primary" />
+}
+
+@section Scripts{
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('.input-validation-error').parents('.form-group').addClass('has-error');
+        $('.field-validation-error').addClass('text-danger');
+
+        $.post("/checkout/countries", {}, function (result) {
+            $("#ShippingCountry").append($("<option>", { value: "", text: "" }));
+            $(result).each(function () {
+                $("#ShippingCountry").append($("<option>", { value: this.Value, text: this.Text }));
+            });
+        });
+
+        $('#ShippingCountry').trigger("chosen:updated");
+
+        $("#ShippingCountry").change(function () {
+            $("#ShippingState").empty();
+            $.post("/checkout/states", { country: this.value }, function (result) {
+                if (result.length === 0) {
+                    $("#ShippingState").parents('.form-group').hide();
+                } else {
+                    $("#ShippingState").parent('.form-group').show();
+                }
+                $("#ShippingState").append($("<option>", { value: "", text: "" }));
+                $(result).each(function () {
+                    $("#ShippingState").append($("<option>", { value: this.Value, text: this.Text }));
+                });
+
+                $('#ShippingState').trigger("chosen:updated");
+
+
+            });
+        });
+
+    });
+    </script>
+}

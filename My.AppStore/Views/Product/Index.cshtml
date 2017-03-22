@@ -1,0 +1,30 @@
+﻿@model My.AppStore.Models.ProductModel
+@{
+    ViewBag.Title = Model.Name;
+}
+<div class="row">
+    <div class="col-xs-4 well-sm">
+        @foreach (var img in Model.Images)
+        {
+            <img src="@img" class="img-rounded" style="max-width:100%" />
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-6 well">
+        <div>
+            <h2>@Model.Name</h2>
+            <p>@Model.Price.Value.ToString("C")</p>
+            <p>@Model.Description</p>
+            @using (Html.BeginForm())
+            {
+                @Html.HiddenFor(x => x.ID)
+                @Html.HiddenFor(x => x.Name)
+                @Html.HiddenFor(x => x.Price)
+                @Html.HiddenFor(x => x.Description)
+                <input type="submit" class="btn btn-primary" value="Add To Cart" />
+            }
+        </div>
+    </div>
+</div>
