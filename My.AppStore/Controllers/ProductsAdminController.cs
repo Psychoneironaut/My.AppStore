@@ -10,7 +10,7 @@ using My.AppStore.Models;
 
 namespace My.AppStore.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class ProductsAdminController : Controller
     {
         private AppStoreEntities db = new AppStoreEntities();
@@ -48,10 +48,14 @@ namespace My.AppStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Price,Description,Inventory,Created,Modified")] Product product)
+        public ActionResult Create([Bind(Include = "ID,Name,Price,Description,Inventory,Created,Modified")] Product product, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
+                product.Created = DateTime.UtcNow;
+                product.Modified = DateTime.UtcNow;
+                //TODO: Image thing
+                
                 db.Products.Add(product);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -80,10 +84,12 @@ namespace My.AppStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Price,Description,Inventory,Created,Modified")] Product product)
+        public ActionResult Edit([Bind(Include = "ID,Name,Price,Description,Inventory,Created,Modified")] Product product, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
+                product.Modified = DateTime.UtcNow;
+                //TODO: image thing
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

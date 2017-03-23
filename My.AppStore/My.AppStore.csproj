@@ -264,7 +264,6 @@
     </Compile>
     <Compile Include="Models\StateModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="StateData.cs" />
   </ItemGroup>
   <ItemGroup>

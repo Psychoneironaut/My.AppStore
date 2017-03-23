@@ -83,7 +83,7 @@ namespace My.AppStore.Controllers
                         FormsAuthentication.SetAuthCookie(model.EmailAddress, true);
                         return RedirectToAction("Index", "Home");
                     }
-                    ModelState.AddModelError("EmailAddress", "Could not sign in with this username and/or password");
+                    ModelState.AddModelError("EmailAddress", "Invalid password and/or username.");
                 }
             }
             return View(model);
