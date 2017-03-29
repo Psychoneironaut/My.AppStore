@@ -1,11 +1,12 @@
 ﻿CREATE TABLE [dbo].[Reviews]
 (
-	[ID] INT NOT NULL PRIMARY KEY,
+	[ID] INT IDENTITY (1,1) NOT NULL, 
 	[ProductID] INT NOT NULL,
 	[Email] NVARCHAR(1000) NOT NULL,
 	[Rating] INT NOT NULL,
 	[Body] NTEXT NULL,
 	[Created] DATETIME NULL DEFAULT GetUtcDate(),
 	[Modified] DATETIME NULL DEFAULT GetUtcDate(),
+	CONSTRAINT [PK_Reviews] PRIMARY KEY ([ID]),
     CONSTRAINT [FK_Reviews_Products] FOREIGN KEY (ProductID) REFERENCES Products([ID]) ON DELETE CASCADE
 )

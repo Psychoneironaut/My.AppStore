@@ -5,7 +5,6 @@ using System.Web;
 
 namespace My.AppStore.Models
 {
-
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -17,7 +16,7 @@ namespace My.AppStore.Models
     {
         // Your context has been configured to use a 'IdentityModels' connection string from your application's
         // configuration file (App.config or Web.config). By default, this connection string targets the
-        // 'CodingTemple.BoardGameStore.Models.IdentityModels' database on your LocalDb instance.
+        // 'My.AppStore.Models.IdentityModels' database on your LocalDb instance.
         //
         // If you wish to target a different database and/or database provider, modify the 'IdentityModels'
         // connection string in the application configuration file.

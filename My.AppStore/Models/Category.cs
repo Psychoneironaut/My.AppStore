@@ -12,29 +12,21 @@ namespace My.AppStore.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Order
+    public partial class Category
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Order()
+        public Category()
         {
-            this.OrdersProducts = new HashSet<OrdersProduct>();
+            this.CategoriesProducts = new HashSet<CategoriesProduct>();
         }
     
         public int ID { get; set; }
-        public Nullable<System.Guid> OrderNumber { get; set; }
-        public string BuyerEmail { get; set; }
-        public Nullable<System.DateTime> TimeCompleted { get; set; }
-        public Nullable<int> ShippingAddressID { get; set; }
-        public Nullable<int> BillingAddressID { get; set; }
-        public string ShipCareOf { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         public Nullable<System.DateTime> Created { get; set; }
         public Nullable<System.DateTime> Modified { get; set; }
-        public string AspNetUserID { get; set; }
     
-        public virtual Address Address { get; set; }
-        public virtual Address Address1 { get; set; }
-        public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrdersProduct> OrdersProducts { get; set; }
+        public virtual ICollection<CategoriesProduct> CategoriesProducts { get; set; }
     }
 }

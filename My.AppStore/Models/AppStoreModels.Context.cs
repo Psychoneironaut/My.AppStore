@@ -12,6 +12,8 @@ namespace My.AppStore.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class AppStoreEntities : DbContext
     {
@@ -26,6 +28,12 @@ namespace My.AppStore.Models
         }
     
         public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<CategoriesProduct> CategoriesProducts { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrdersProduct> OrdersProducts { get; set; }
@@ -33,5 +41,14 @@ namespace My.AppStore.Models
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<State> States { get; set; }
+    
+        public virtual int sp_CompleteOrder(Nullable<int> orderID)
+        {
+            var orderIDParameter = orderID.HasValue ?
+                new ObjectParameter("orderID", orderID) :
+                new ObjectParameter("orderID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_CompleteOrder", orderIDParameter);
+        }
     }
 }

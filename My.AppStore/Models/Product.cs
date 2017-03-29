@@ -17,6 +17,7 @@ namespace My.AppStore.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Product()
         {
+            this.CategoriesProducts = new HashSet<CategoriesProduct>();
             this.OrdersProducts = new HashSet<OrdersProduct>();
             this.ProductImages = new HashSet<ProductImage>();
             this.Reviews = new HashSet<Review>();
@@ -26,10 +27,13 @@ namespace My.AppStore.Models
         public string Name { get; set; }
         public Nullable<decimal> Price { get; set; }
         public string Description { get; set; }
+        public bool Active { get; set; }
         public int Inventory { get; set; }
         public Nullable<System.DateTime> Created { get; set; }
         public Nullable<System.DateTime> Modified { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CategoriesProduct> CategoriesProducts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrdersProduct> OrdersProducts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

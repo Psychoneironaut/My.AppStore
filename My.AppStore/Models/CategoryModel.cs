@@ -5,16 +5,11 @@ using System.Web;
 
 namespace My.AppStore.Models
 {
-    public class ProductModel
+    public class CategoryModel
     {
-        public int? ID { get; set; }
-
         public string Name { get; set; }
-
-        public decimal? Price { get; set; }
-
-        public IEnumerable<string> Images { get; set; }
-
         public string Description { get; set; }
+        public IEnumerable<ProductModel> Products { get; set; }
+        public int ID { get; internal set; }
     }
 }

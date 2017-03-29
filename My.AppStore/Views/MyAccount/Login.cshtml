@@ -3,6 +3,13 @@
     ViewBag.Title = "Login";
 }
 
+@if (TempData["AccountConfirmed"] != null)
+{
+    <div class="alert alert-success">
+        <p>Your account has been confirmed. Please log in to continue.</p>
+    </div>
+}
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()

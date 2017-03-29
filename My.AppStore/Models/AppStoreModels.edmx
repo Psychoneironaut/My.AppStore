@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AppStoreModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AppStoreModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Addresses">
           <Key>
             <PropertyRef Name="ID" />
@@ -16,6 +16,78 @@
           <Property Name="State" Type="nvarchar" MaxLength="100" />
           <Property Name="Zip" Type="nvarchar" MaxLength="12" />
           <Property Name="Country" Type="nchar" MaxLength="100" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Modified" Type="datetime" />
+          <Property Name="AspNetUserID" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Description" Type="ntext" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="Modified" Type="datetime" />
+        </EntityType>
+        <EntityType Name="CategoriesProducts">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
           <Property Name="Created" Type="datetime" />
           <Property Name="Modified" Type="datetime" />
         </EntityType>
@@ -33,14 +105,16 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderNumber" Type="uniqueidentifier" />
           <Property Name="BuyerEmail" Type="nvarchar" MaxLength="1000" />
           <Property Name="TimeCompleted" Type="datetime" />
           <Property Name="ShippingAddressID" Type="int" />
           <Property Name="BillingAddressID" Type="int" />
+          <Property Name="ShipCareOf" Type="nvarchar" MaxLength="1000" />
           <Property Name="Created" Type="datetime" />
           <Property Name="Modified" Type="datetime" />
+          <Property Name="AspNetUserID" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="OrdersProducts">
           <Key>
@@ -72,6 +146,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="Price" Type="money" />
           <Property Name="Description" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="Inventory" Type="int" Nullable="false" />
           <Property Name="Created" Type="datetime" />
           <Property Name="Modified" Type="datetime" />
@@ -80,7 +155,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProductID" Type="int" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="Rating" Type="int" Nullable="false" />
@@ -102,31 +177,107 @@ warning 6002: The table/view 'AppStore.dbo.States' does not have a primary key d
           <Property Name="Created" Type="datetime" />
           <Property Name="Modified" Type="datetime" />
         </EntityType>
-        <Association Name="FK_OrderProduct_Order">
-          <End Role="Orders" Type="Self.Orders" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="OrdersProducts" Type="Self.OrdersProducts" Multiplicity="*" />
+        <Association Name="FK_Addresses_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Addresses" Type="Self.Addresses" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Orders">
-              <PropertyRef Name="ID" />
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="OrdersProducts">
-              <PropertyRef Name="OrderID" />
+            <Dependent Role="Addresses">
+              <PropertyRef Name="AspNetUserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_OrderProduct_Product">
-          <End Role="Products" Type="Self.Products" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="OrdersProducts" Type="Self.OrdersProducts" Multiplicity="*" />
+        <Association Name="FK_CategoriesProducts_Category">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="CategoriesProducts" Type="Self.CategoriesProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CategoriesProducts">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CategoriesProducts_Product">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="CategoriesProducts" Type="Self.CategoriesProducts" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="OrdersProducts">
+            <Dependent Role="CategoriesProducts">
               <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="AspNetUserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -154,7 +305,35 @@ warning 6002: The table/view 'AppStore.dbo.States' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProductImage_Product">
+        <Association Name="FK_OrdersProducts_Order">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OrdersProducts" Type="Self.OrdersProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrdersProducts">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersProducts_Product">
+          <End Role="Products" Type="Self.Products" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OrdersProducts" Type="Self.OrdersProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrdersProducts">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductImages_Product">
           <End Role="Products" Type="Self.Products" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -196,8 +375,18 @@ warning 6002: The table/view 'AppStore.dbo.States' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="sp_CompleteOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="orderID" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="AppStoreModelStoreContainer">
           <EntitySet Name="Addresses" EntityType="Self.Addresses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CategoriesProducts" EntityType="Self.CategoriesProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrdersProducts" EntityType="Self.OrdersProducts" Schema="dbo" store:Type="Tables" />
@@ -214,13 +403,37 @@ warning 6002: The table/view 'AppStore.dbo.States' does not have a primary key d
     [States].[Modified] AS [Modified]
     FROM [dbo].[States] AS [States]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK_OrderProduct_Order" Association="Self.FK_OrderProduct_Order">
-            <End Role="Orders" EntitySet="Orders" />
-            <End Role="OrdersProducts" EntitySet="OrdersProducts" />
+          <AssociationSet Name="FK_Addresses_AspNetUsers" Association="Self.FK_Addresses_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Addresses" EntitySet="Addresses" />
           </AssociationSet>
-          <AssociationSet Name="FK_OrderProduct_Product" Association="Self.FK_OrderProduct_Product">
+          <AssociationSet Name="FK_CategoriesProducts_Category" Association="Self.FK_CategoriesProducts_Category">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="CategoriesProducts" EntitySet="CategoriesProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CategoriesProducts_Product" Association="Self.FK_CategoriesProducts_Product">
             <End Role="Products" EntitySet="Products" />
-            <End Role="OrdersProducts" EntitySet="OrdersProducts" />
+            <End Role="CategoriesProducts" EntitySet="CategoriesProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_AspNetUsers" Association="Self.FK_Order_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_BillingAddress" Association="Self.FK_Orders_BillingAddress">
             <End Role="Addresses" EntitySet="Addresses" />
@@ -230,7 +443,15 @@ warning 6002: The table/view 'AppStore.dbo.States' does not have a primary key d
             <End Role="Addresses" EntitySet="Addresses" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
-          <AssociationSet Name="FK_ProductImage_Product" Association="Self.FK_ProductImage_Product">
+          <AssociationSet Name="FK_OrdersProducts_Order" Association="Self.FK_OrdersProducts_Order">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrdersProducts" EntitySet="OrdersProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersProducts_Product" Association="Self.FK_OrdersProducts_Product">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="OrdersProducts" EntitySet="OrdersProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductImages_Product" Association="Self.FK_ProductImages_Product">
             <End Role="Products" EntitySet="Products" />
             <End Role="ProductImages" EntitySet="ProductImages" />
           </AssociationSet>
@@ -243,11 +464,85 @@ warning 6002: The table/view 'AppStore.dbo.States' does not have a primary key d
             <End Role="States" EntitySet="States" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AppStoreModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AppStoreEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Addresses" EntityType="AppStoreModel.Address" />
+          <EntitySet Name="AspNetRoles" EntityType="AppStoreModel.AspNetRole" />
+          <EntitySet Name="AspNetUserClaims" EntityType="AppStoreModel.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="AppStoreModel.AspNetUserLogin" />
+          <EntitySet Name="AspNetUsers" EntityType="AppStoreModel.AspNetUser" />
+          <EntitySet Name="Categories" EntityType="AppStoreModel.Category" />
+          <EntitySet Name="CategoriesProducts" EntityType="AppStoreModel.CategoriesProduct" />
+          <EntitySet Name="Countries" EntityType="AppStoreModel.Country" />
+          <EntitySet Name="Orders" EntityType="AppStoreModel.Order" />
+          <EntitySet Name="OrdersProducts" EntityType="AppStoreModel.OrdersProduct" />
+          <EntitySet Name="ProductImages" EntityType="AppStoreModel.ProductImage" />
+          <EntitySet Name="Products" EntityType="AppStoreModel.Product" />
+          <EntitySet Name="Reviews" EntityType="AppStoreModel.Review" />
+          <EntitySet Name="States" EntityType="AppStoreModel.State" />
+          <AssociationSet Name="FK_Addresses_AspNetUsers" Association="AppStoreModel.FK_Addresses_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Address" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_BillingAddress" Association="AppStoreModel.FK_Orders_BillingAddress">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_ShippingAddress" Association="AppStoreModel.FK_Orders_ShippingAddress">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="AppStoreModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="AppStoreModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_AspNetUsers" Association="AppStoreModel.FK_Order_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CategoriesProducts_Category" Association="AppStoreModel.FK_CategoriesProducts_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="CategoriesProduct" EntitySet="CategoriesProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CategoriesProducts_Product" Association="AppStoreModel.FK_CategoriesProducts_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="CategoriesProduct" EntitySet="CategoriesProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_States_Countries" Association="AppStoreModel.FK_States_Countries">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="State" EntitySet="States" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersProducts_Order" Association="AppStoreModel.FK_OrdersProducts_Order">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="OrdersProduct" EntitySet="OrdersProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrdersProducts_Product" Association="AppStoreModel.FK_OrdersProducts_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="OrdersProduct" EntitySet="OrdersProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductImages_Product" Association="AppStoreModel.FK_ProductImages_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductImage" EntitySet="ProductImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reviews_Products" Association="AppStoreModel.FK_Reviews_Products">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="AppStoreModel.AspNetUserRoles">
+            <End Role="AspNetRole" EntitySet="AspNetRoles" />
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <FunctionImport Name="sp_CompleteOrder">
+            <Parameter Name="orderID" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="ID" />
@@ -261,35 +556,114 @@ warning 6002: The table/view 'AppStore.dbo.States' does not have a primary key d
           <Property Name="Country" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
           <Property Name="Created" Type="DateTime" Precision="3" />
           <Property Name="Modified" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_BillingAddress" FromRole="Addresses" ToRole="Orders" />
-          <NavigationProperty Name="Orders1" Relationship="Self.FK_Orders_ShippingAddress" FromRole="Addresses" ToRole="Orders" />
+          <Property Name="AspNetUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="AppStoreModel.FK_Addresses_AspNetUsers" FromRole="Address" ToRole="AspNetUser" />
+          <NavigationProperty Name="Orders" Relationship="AppStoreModel.FK_Orders_BillingAddress" FromRole="Address" ToRole="Order" />
+          <NavigationProperty Name="Orders1" Relationship="AppStoreModel.FK_Orders_ShippingAddress" FromRole="Address" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="AppStoreModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="AppStoreModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="AppStoreModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Addresses" Relationship="AppStoreModel.FK_Addresses_AspNetUsers" FromRole="AspNetUser" ToRole="Address" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="AppStoreModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="AppStoreModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+          <NavigationProperty Name="Orders" Relationship="AppStoreModel.FK_Order_AspNetUsers" FromRole="AspNetUser" ToRole="Order" />
+          <NavigationProperty Name="AspNetRoles" Relationship="AppStoreModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="Modified" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="CategoriesProducts" Relationship="AppStoreModel.FK_CategoriesProducts_Category" FromRole="Category" ToRole="CategoriesProduct" />
+        </EntityType>
+        <EntityType Name="CategoriesProduct">
+          <Key>
+            <PropertyRef Name="CategoryID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="Modified" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Category" Relationship="AppStoreModel.FK_CategoriesProducts_Category" FromRole="CategoriesProduct" ToRole="Category" />
+          <NavigationProperty Name="Product" Relationship="AppStoreModel.FK_CategoriesProducts_Product" FromRole="CategoriesProduct" ToRole="Product" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Abbreviation" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Abbreviation" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Created" Type="DateTime" Precision="3" />
           <Property Name="Modified" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="States" Relationship="Self.FK_States_Countries" FromRole="Countries" ToRole="States" />
+          <NavigationProperty Name="States" Relationship="AppStoreModel.FK_States_Countries" FromRole="Country" ToRole="State" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderNumber" Type="Guid" />
           <Property Name="BuyerEmail" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="TimeCompleted" Type="DateTime" Precision="3" />
           <Property Name="ShippingAddressID" Type="Int32" />
           <Property Name="BillingAddressID" Type="Int32" />
+          <Property Name="ShipCareOf" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Created" Type="DateTime" Precision="3" />
           <Property Name="Modified" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Address" Relationship="Self.FK_Orders_BillingAddress" FromRole="Orders" ToRole="Addresses" />
-          <NavigationProperty Name="Address1" Relationship="Self.FK_Orders_ShippingAddress" FromRole="Orders" ToRole="Addresses" />
-          <NavigationProperty Name="OrdersProducts" Relationship="Self.FK_OrderProduct_Order" FromRole="Orders" ToRole="OrdersProducts" />
+          <Property Name="AspNetUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Address" Relationship="AppStoreModel.FK_Orders_BillingAddress" FromRole="Order" ToRole="Address" />
+          <NavigationProperty Name="Address1" Relationship="AppStoreModel.FK_Orders_ShippingAddress" FromRole="Order" ToRole="Address" />
+          <NavigationProperty Name="AspNetUser" Relationship="AppStoreModel.FK_Order_AspNetUsers" FromRole="Order" ToRole="AspNetUser" />
+          <NavigationProperty Name="OrdersProducts" Relationship="AppStoreModel.FK_OrdersProducts_Order" FromRole="Order" ToRole="OrdersProduct" />
         </EntityType>
         <EntityType Name="OrdersProduct">
           <Key>
@@ -301,8 +675,8 @@ warning 6002: The table/view 'AppStore.dbo.States' does not have a primary key d
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="Created" Type="DateTime" Precision="3" />
           <Property Name="Modified" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Order" Relationship="Self.FK_OrderProduct_Order" FromRole="OrdersProducts" ToRole="Orders" />
-          <NavigationProperty Name="Product" Relationship="Self.FK_OrderProduct_Product" FromRole="OrdersProducts" ToRole="Products" />
+          <NavigationProperty Name="Order" Relationship="AppStoreModel.FK_OrdersProducts_Order" FromRole="OrdersProduct" ToRole="Order" />
+          <NavigationProperty Name="Product" Relationship="AppStoreModel.FK_OrdersProducts_Product" FromRole="OrdersProduct" ToRole="Product" />
         </EntityType>
         <EntityType Name="ProductImage">
           <Key>
@@ -314,35 +688,37 @@ warning 6002: The table/view 'AppStore.dbo.States' does not have a primary key d
           <Property Name="AltText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Created" Type="DateTime" Precision="3" />
           <Property Name="Modified" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Product" Relationship="Self.FK_ProductImage_Product" FromRole="ProductImages" ToRole="Products" />
+          <NavigationProperty Name="Product" Relationship="AppStoreModel.FK_ProductImages_Product" FromRole="ProductImage" ToRole="Product" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="Inventory" Type="Int32" Nullable="false" />
           <Property Name="Created" Type="DateTime" Precision="3" />
           <Property Name="Modified" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="OrdersProducts" Relationship="Self.FK_OrderProduct_Product" FromRole="Products" ToRole="OrdersProducts" />
-          <NavigationProperty Name="ProductImages" Relationship="Self.FK_ProductImage_Product" FromRole="Products" ToRole="ProductImages" />
-          <NavigationProperty Name="Reviews" Relationship="Self.FK_Reviews_Products" FromRole="Products" ToRole="Reviews" />
+          <NavigationProperty Name="CategoriesProducts" Relationship="AppStoreModel.FK_CategoriesProducts_Product" FromRole="Product" ToRole="CategoriesProduct" />
+          <NavigationProperty Name="OrdersProducts" Relationship="AppStoreModel.FK_OrdersProducts_Product" FromRole="Product" ToRole="OrdersProduct" />
+          <NavigationProperty Name="ProductImages" Relationship="AppStoreModel.FK_ProductImages_Product" FromRole="Product" ToRole="ProductImage" />
+          <NavigationProperty Name="Reviews" Relationship="AppStoreModel.FK_Reviews_Products" FromRole="Product" ToRole="Review" />
         </EntityType>
         <EntityType Name="Review">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProductID" Type="Int32" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Rating" Type="Int32" Nullable="false" />
           <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Created" Type="DateTime" Precision="3" />
           <Property Name="Modified" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Product" Relationship="Self.FK_Reviews_Products" FromRole="Reviews" ToRole="Products" />
+          <NavigationProperty Name="Product" Relationship="AppStoreModel.FK_Reviews_Products" FromRole="Review" ToRole="Product" />
         </EntityType>
         <EntityType Name="State">
           <Key>
@@ -355,141 +731,183 @@ warning 6002: The table/view 'AppStore.dbo.States' does not have a primary key d
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Created" Type="DateTime" Precision="3" />
           <Property Name="Modified" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Country" Relationship="Self.FK_States_Countries" FromRole="States" ToRole="Countries" />
+          <NavigationProperty Name="Country" Relationship="AppStoreModel.FK_States_Countries" FromRole="State" ToRole="Country" />
         </EntityType>
-        <Association Name="FK_Orders_BillingAddress">
-          <End Role="Addresses" Type="Self.Address" Multiplicity="0..1" />
-          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+        <Association Name="FK_Addresses_AspNetUsers">
+          <End Type="AppStoreModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="AppStoreModel.Address" Role="Address" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Addresses">
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Address">
+              <PropertyRef Name="AspNetUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_BillingAddress">
+          <End Type="AppStoreModel.Address" Role="Address" Multiplicity="0..1" />
+          <End Type="AppStoreModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Orders">
+            <Dependent Role="Order">
               <PropertyRef Name="BillingAddressID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_ShippingAddress">
-          <End Role="Addresses" Type="Self.Address" Multiplicity="0..1" />
-          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <End Type="AppStoreModel.Address" Role="Address" Multiplicity="0..1" />
+          <End Type="AppStoreModel.Order" Role="Order" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Addresses">
+            <Principal Role="Address">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Orders">
+            <Dependent Role="Order">
               <PropertyRef Name="ShippingAddressID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_States_Countries">
-          <End Role="Countries" Type="Self.Country" Multiplicity="1">
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Type="AppStoreModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="States" Type="Self.State" Multiplicity="*" />
+          <End Type="AppStoreModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Countries">
-              <PropertyRef Name="ID" />
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="States">
-              <PropertyRef Name="CountryID" />
+            <Dependent Role="AspNetUserClaim">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_OrderProduct_Order">
-          <End Role="Orders" Type="Self.Order" Multiplicity="1">
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Type="AppStoreModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="OrdersProducts" Type="Self.OrdersProduct" Multiplicity="*" />
+          <End Type="AppStoreModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Orders">
-              <PropertyRef Name="ID" />
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="OrdersProducts">
-              <PropertyRef Name="OrderID" />
+            <Dependent Role="AspNetUserLogin">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_OrderProduct_Product">
-          <End Role="Products" Type="Self.Product" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="OrdersProducts" Type="Self.OrdersProduct" Multiplicity="*" />
+        <Association Name="FK_Order_AspNetUsers">
+          <End Type="AppStoreModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="AppStoreModel.Order" Role="Order" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Products">
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="AspNetUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CategoriesProducts_Category">
+          <End Type="AppStoreModel.Category" Role="Category" Multiplicity="1" />
+          <End Type="AppStoreModel.CategoriesProduct" Role="CategoriesProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="OrdersProducts">
+            <Dependent Role="CategoriesProduct">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CategoriesProducts_Product">
+          <End Type="AppStoreModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="AppStoreModel.CategoriesProduct" Role="CategoriesProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CategoriesProduct">
               <PropertyRef Name="ProductID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProductImage_Product">
-          <End Role="Products" Type="Self.Product" Multiplicity="1">
+        <Association Name="FK_States_Countries">
+          <End Type="AppStoreModel.Country" Role="Country" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="ProductImages" Type="Self.ProductImage" Multiplicity="*" />
+          <End Type="AppStoreModel.State" Role="State" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Products">
+            <Principal Role="Country">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="ProductImages">
+            <Dependent Role="State">
+              <PropertyRef Name="CountryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersProducts_Order">
+          <End Type="AppStoreModel.Order" Role="Order" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AppStoreModel.OrdersProduct" Role="OrdersProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrdersProduct">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrdersProducts_Product">
+          <End Type="AppStoreModel.Product" Role="Product" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AppStoreModel.OrdersProduct" Role="OrdersProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrdersProduct">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductImages_Product">
+          <End Type="AppStoreModel.Product" Role="Product" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AppStoreModel.ProductImage" Role="ProductImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProductImage">
               <PropertyRef Name="ProductID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Reviews_Products">
-          <End Role="Products" Type="Self.Product" Multiplicity="1">
+          <End Type="AppStoreModel.Product" Role="Product" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Reviews" Type="Self.Review" Multiplicity="*" />
+          <End Type="AppStoreModel.Review" Role="Review" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Products">
+            <Principal Role="Product">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Reviews">
+            <Dependent Role="Review">
               <PropertyRef Name="ProductID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="AppStoreEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Addresses" EntityType="Self.Address" />
-          <EntitySet Name="Countries" EntityType="Self.Country" />
-          <EntitySet Name="Orders" EntityType="Self.Order" />
-          <EntitySet Name="OrdersProducts" EntityType="Self.OrdersProduct" />
-          <EntitySet Name="ProductImages" EntityType="Self.ProductImage" />
-          <EntitySet Name="Products" EntityType="Self.Product" />
-          <EntitySet Name="Reviews" EntityType="Self.Review" />
-          <EntitySet Name="States" EntityType="Self.State" />
-          <AssociationSet Name="FK_Orders_BillingAddress" Association="Self.FK_Orders_BillingAddress">
-            <End Role="Addresses" EntitySet="Addresses" />
-            <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Orders_ShippingAddress" Association="Self.FK_Orders_ShippingAddress">
-            <End Role="Addresses" EntitySet="Addresses" />
-            <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_States_Countries" Association="Self.FK_States_Countries">
-            <End Role="Countries" EntitySet="Countries" />
-            <End Role="States" EntitySet="States" />
-          </AssociationSet>
-          <AssociationSet Name="FK_OrderProduct_Order" Association="Self.FK_OrderProduct_Order">
-            <End Role="Orders" EntitySet="Orders" />
-            <End Role="OrdersProducts" EntitySet="OrdersProducts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_OrderProduct_Product" Association="Self.FK_OrderProduct_Product">
-            <End Role="Products" EntitySet="Products" />
-            <End Role="OrdersProducts" EntitySet="OrdersProducts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProductImage_Product" Association="Self.FK_ProductImage_Product">
-            <End Role="Products" EntitySet="Products" />
-            <End Role="ProductImages" EntitySet="ProductImages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Reviews_Products" Association="Self.FK_Reviews_Products">
-            <End Role="Products" EntitySet="Products" />
-            <End Role="Reviews" EntitySet="Reviews" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        <Association Name="AspNetUserRoles">
+          <End Type="AppStoreModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+          <End Type="AppStoreModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -498,104 +916,183 @@ warning 6002: The table/view 'AppStore.dbo.States' does not have a primary key d
           <EntitySetMapping Name="Addresses">
             <EntityTypeMapping TypeName="AppStoreModel.Address">
               <MappingFragment StoreEntitySet="Addresses">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Address1" ColumnName="Address1" />
-                <ScalarProperty Name="Address2" ColumnName="Address2" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="Zip" ColumnName="Zip" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="AspNetUserID" ColumnName="AspNetUserID" />
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="AppStoreModel.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="AppStoreModel.AspNetUserClaim">
+              <MappingFragment StoreEntitySet="AspNetUserClaims">
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserLogins">
+            <EntityTypeMapping TypeName="AppStoreModel.AspNetUserLogin">
+              <MappingFragment StoreEntitySet="AspNetUserLogins">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="AppStoreModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="AppStoreModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CategoriesProducts">
+            <EntityTypeMapping TypeName="AppStoreModel.CategoriesProduct">
+              <MappingFragment StoreEntitySet="CategoriesProducts">
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Countries">
             <EntityTypeMapping TypeName="AppStoreModel.Country">
               <MappingFragment StoreEntitySet="Countries">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Abbreviation" ColumnName="Abbreviation" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Abbreviation" ColumnName="Abbreviation" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="AppStoreModel.Order">
               <MappingFragment StoreEntitySet="Orders">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
-                <ScalarProperty Name="BuyerEmail" ColumnName="BuyerEmail" />
-                <ScalarProperty Name="TimeCompleted" ColumnName="TimeCompleted" />
-                <ScalarProperty Name="ShippingAddressID" ColumnName="ShippingAddressID" />
-                <ScalarProperty Name="BillingAddressID" ColumnName="BillingAddressID" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="AspNetUserID" ColumnName="AspNetUserID" />
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="ShipCareOf" ColumnName="ShipCareOf" />
+                <ScalarProperty Name="BillingAddressID" ColumnName="BillingAddressID" />
+                <ScalarProperty Name="ShippingAddressID" ColumnName="ShippingAddressID" />
+                <ScalarProperty Name="TimeCompleted" ColumnName="TimeCompleted" />
+                <ScalarProperty Name="BuyerEmail" ColumnName="BuyerEmail" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OrdersProducts">
             <EntityTypeMapping TypeName="AppStoreModel.OrdersProduct">
               <MappingFragment StoreEntitySet="OrdersProducts">
-                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ProductImages">
             <EntityTypeMapping TypeName="AppStoreModel.ProductImage">
               <MappingFragment StoreEntitySet="ProductImages">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
-                <ScalarProperty Name="AltText" ColumnName="AltText" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="AltText" ColumnName="AltText" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="AppStoreModel.Product">
               <MappingFragment StoreEntitySet="Products">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Inventory" ColumnName="Inventory" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Inventory" ColumnName="Inventory" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Reviews">
             <EntityTypeMapping TypeName="AppStoreModel.Review">
               <MappingFragment StoreEntitySet="Reviews">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Rating" ColumnName="Rating" />
-                <ScalarProperty Name="Body" ColumnName="Body" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="States">
             <EntityTypeMapping TypeName="AppStoreModel.State">
               <MappingFragment StoreEntitySet="States">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
-                <ScalarProperty Name="Abbreviation" ColumnName="Abbreviation" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Abbreviation" ColumnName="Abbreviation" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="AppStoreModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetUser">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="AspNetRole">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="sp_CompleteOrder" FunctionName="AppStoreModel.Store.sp_CompleteOrder" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

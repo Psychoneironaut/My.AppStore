@@ -36,20 +36,58 @@ namespace My.AppStore.Controllers
         [HttpPost]
         public ActionResult Index(ProductModel model)
         {
-            //TODO: Collect information about the selected product
-            //persist it in some sort of "Cart/Basket/ShoppingBag" in a database
-            List<ProductModel> cart = this.Session["Cart"] as List<ProductModel>;
-            if (cart == null)
+            using (AppStoreEntities entities = new AppStoreEntities())
             {
-                cart = new List<ProductModel>();
+                if (User.Identity.IsAuthenticated)
+                {
+                    AspNetUser currentUser = entities.AspNetUsers.Single(x => x.UserName == User.Identity.Name);
+                    Order o = currentUser.Orders.FirstOrDefault(x => x.TimeCompleted == null);
+                    if (o == null)
+                    {
+                        o = new Order();
+                        o.OrderNumber = Guid.NewGuid();
+                        currentUser.Orders.Add(o);
+                    }
+                    var product = o.OrdersProducts.FirstOrDefault(x => x.ProductID == model.ID);
+                    if (product == null)
+                    {
+                        product = new OrdersProduct();
+                        product.ProductID = model.ID ?? 0;
+                        product.Quantity = 0;
+                        o.OrdersProducts.Add(product);
+                    }
+                    product.Quantity += 1;
+                }
+                else
+                {
+                    Order o = null;
+                    if (Request.Cookies.AllKeys.Contains("orderNumber"))
+                    {
+                        Guid orderNumber = Guid.Parse(Request.Cookies["orderNumber"].Value);
+                        o = entities.Orders.FirstOrDefault(x => x.TimeCompleted == null && x.OrderNumber == orderNumber);
+
+                    }
+                    if (o == null)
+                    {
+                        o = new Order();
+                        o.OrderNumber = Guid.NewGuid();
+                        entities.Orders.Add(o);
+                        Response.Cookies.Add(new HttpCookie("orderNumber", o.OrderNumber.ToString()));
+                    }
+                    var product = o.OrdersProducts.FirstOrDefault(x => x.ProductID == model.ID);
+                    if (product == null)
+                    {
+                        product = new OrdersProduct();
+                        product.ProductID = model.ID ?? 0;
+                        product.Quantity = 0;
+                        o.OrdersProducts.Add(product);
+                    }
+                    product.Quantity += 1;
+                }
+
+                entities.SaveChanges();
+                TempData.Add("AddedToCart", true);
             }
-
-            cart.Add(model);
-
-            this.Session.Add("Cart", cart);
-
-            TempData.Add("AddedToCart", true);
-
             return RedirectToAction("Index", "Cart");
         }
     }

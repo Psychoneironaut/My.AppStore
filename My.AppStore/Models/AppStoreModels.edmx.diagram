@@ -5,21 +5,34 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="731d4a964d3c4fd0b48b78d8f47fb807" Name="Diagram1">
-        <EntityTypeShape EntityType="AppStoreModel.Address" Width="1.5" PointX="1.5" PointY="13.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="AppStoreModel.Country" Width="1.5" PointX="5.75" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AppStoreModel.Order" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AppStoreModel.OrdersProduct" Width="1.5" PointX="3" PointY="3.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="AppStoreModel.ProductImage" Width="1.5" PointX="3" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="AppStoreModel.Product" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="AppStoreModel.Review" Width="1.5" PointX="3" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AppStoreModel.State" Width="1.5" PointX="8" PointY="1.625" IsExpanded="true" />
-        <AssociationConnector Association="AppStoreModel.FK_Orders_BillingAddress" ManuallyRouted="false" />
-        <AssociationConnector Association="AppStoreModel.FK_Orders_ShippingAddress" ManuallyRouted="false" />
-        <AssociationConnector Association="AppStoreModel.FK_States_Countries" ManuallyRouted="false" />
-        <AssociationConnector Association="AppStoreModel.FK_OrderProduct_Order" ManuallyRouted="false" />
-        <AssociationConnector Association="AppStoreModel.FK_OrderProduct_Product" ManuallyRouted="false" />
-        <AssociationConnector Association="AppStoreModel.FK_ProductImage_Product" ManuallyRouted="false" />
-        <AssociationConnector Association="AppStoreModel.FK_Reviews_Products" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="AppStoreModel.Address" Width="1.5" PointX="5.25" PointY="7.125" />
+        <EntityTypeShape EntityType="AppStoreModel.AspNetRole" Width="1.5" PointX="0.75" PointY="5.5" />
+        <EntityTypeShape EntityType="AppStoreModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="4.375" />
+        <EntityTypeShape EntityType="AppStoreModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="1.875" />
+        <EntityTypeShape EntityType="AppStoreModel.AspNetUser" Width="1.5" PointX="3" PointY="4.125" />
+        <EntityTypeShape EntityType="AppStoreModel.Category" Width="1.5" PointX="7.5" PointY="10.375" />
+        <EntityTypeShape EntityType="AppStoreModel.CategoriesProduct" Width="1.5" PointX="9.75" PointY="1.375" />
+        <EntityTypeShape EntityType="AppStoreModel.Country" Width="1.5" PointX="11.75" PointY="1.625" />
+        <EntityTypeShape EntityType="AppStoreModel.Order" Width="1.5" PointX="7.5" PointY="5.5" />
+        <EntityTypeShape EntityType="AppStoreModel.OrdersProduct" Width="1.5" PointX="9.75" PointY="6.25" />
+        <EntityTypeShape EntityType="AppStoreModel.ProductImage" Width="1.5" PointX="9.75" PointY="10.25" />
+        <EntityTypeShape EntityType="AppStoreModel.Product" Width="1.5" PointX="7.5" PointY="0.75" />
+        <EntityTypeShape EntityType="AppStoreModel.Review" Width="1.5" PointX="9.75" PointY="13.375" />
+        <EntityTypeShape EntityType="AppStoreModel.State" Width="1.5" PointX="14" PointY="1.5" />
+        <AssociationConnector Association="AppStoreModel.FK_Addresses_AspNetUsers" />
+        <AssociationConnector Association="AppStoreModel.FK_Orders_BillingAddress" />
+        <AssociationConnector Association="AppStoreModel.FK_Orders_ShippingAddress" />
+        <AssociationConnector Association="AppStoreModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="AppStoreModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="AppStoreModel.FK_Order_AspNetUsers" />
+        <AssociationConnector Association="AppStoreModel.FK_CategoriesProducts_Category" />
+        <AssociationConnector Association="AppStoreModel.FK_CategoriesProducts_Product" />
+        <AssociationConnector Association="AppStoreModel.FK_States_Countries" />
+        <AssociationConnector Association="AppStoreModel.FK_OrdersProducts_Order" />
+        <AssociationConnector Association="AppStoreModel.FK_OrdersProducts_Product" />
+        <AssociationConnector Association="AppStoreModel.FK_ProductImages_Product" />
+        <AssociationConnector Association="AppStoreModel.FK_Reviews_Products" />
+        <AssociationConnector Association="AppStoreModel.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

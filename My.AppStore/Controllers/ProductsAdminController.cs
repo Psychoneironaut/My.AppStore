@@ -7,6 +7,9 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using My.AppStore.Models;
+using System.Configuration;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace My.AppStore.Controllers
 {
@@ -54,8 +57,49 @@ namespace My.AppStore.Controllers
             {
                 product.Created = DateTime.UtcNow;
                 product.Modified = DateTime.UtcNow;
-                //TODO: Image thing
-                
+
+                string fileName = image.FileName;
+
+                if (ConfigurationManager.AppSettings["UseLocalStorage"] == "true")
+                {
+                    int i = 1;
+                    while (System.IO.File.Exists(Server.MapPath("/content/images/" + fileName)))
+                    {
+                        fileName = System.IO.Path.GetFileNameWithoutExtension(fileName) + i.ToString() + System.IO.Path.GetExtension(fileName);
+                        i++;
+                    }
+                    image.SaveAs(Server.MapPath("/content/images/" + fileName));
+                    fileName = "/content/images/" + fileName;
+                }
+                else
+                {
+                    CloudStorageAccount account = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["StorageConnectionString"]);
+                    var blobClient = account.CreateCloudBlobClient();
+                    var rootContainer = blobClient.GetRootContainerReference();
+                    rootContainer.CreateIfNotExists();
+                    rootContainer.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+                    var blob = rootContainer.GetBlockBlobReference(fileName);
+                    blob.UploadFromStream(image.InputStream);
+
+                    fileName = blob.Uri.ToString();
+                }
+
+                if (db.ProductImages.Any(x => x.ID == product.ID))
+                {
+                    ProductImage pi = db.ProductImages.FirstOrDefault(x => x.ProductID == product.ID);
+                    pi.FilePath = "/content/images/" + fileName;
+                    pi.Modified = DateTime.UtcNow;
+                }
+                else
+                {
+                    product.ProductImages.Add(new ProductImage
+                    {
+                        FilePath = "/content/images/" + fileName,
+                        Created = DateTime.UtcNow,
+                        Modified = DateTime.UtcNow
+                    });
+                }
+
                 db.Products.Add(product);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -89,8 +133,51 @@ namespace My.AppStore.Controllers
             if (ModelState.IsValid)
             {
                 product.Modified = DateTime.UtcNow;
-                //TODO: image thing
+
                 db.Entry(product).State = EntityState.Modified;
+
+                string fileName = image.FileName;
+
+                if (ConfigurationManager.AppSettings["UseLocalStorage"] == "true")
+                {
+                    int i = 1;
+                    while (System.IO.File.Exists(Server.MapPath("/content/images/" + fileName)))
+                    {
+                        fileName = System.IO.Path.GetFileNameWithoutExtension(fileName) + i.ToString() + System.IO.Path.GetExtension(fileName);
+                        i++;
+                    }
+                    image.SaveAs(Server.MapPath("/content/images/" + fileName));
+                    fileName = "/content/images/" + fileName;
+                }
+                else
+                {
+                    CloudStorageAccount account = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["StorageConnectionString"]);
+                    var blobClient = account.CreateCloudBlobClient();
+                    var rootContainer = blobClient.GetRootContainerReference();
+                    rootContainer.CreateIfNotExists();
+                    rootContainer.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+                    var blob = rootContainer.GetBlockBlobReference(fileName);
+                    blob.UploadFromStream(image.InputStream);
+
+                    fileName = blob.Uri.ToString();
+                }
+
+                if(db.ProductImages.Any(x=> x.ID == product.ID))
+                {
+                    ProductImage pi = db.ProductImages.FirstOrDefault(x => x.ProductID == product.ID);
+                    pi.FilePath = fileName;
+                    pi.Modified = DateTime.UtcNow;
+                }
+                else
+                {
+                    product.ProductImages.Add(new ProductImage
+                    {
+                        FilePath = fileName,
+                        Created = DateTime.UtcNow,
+                        Modified = DateTime.UtcNow
+                    });
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

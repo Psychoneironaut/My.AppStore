@@ -7,5 +7,5 @@
 	[Created] DATETIME NULL DEFAULT GetUtcDate(),
 	[Modified] DATETIME NULL DEFAULT GetUtcDate(),
 	CONSTRAINT [PK_ProductImages] PRIMARY KEY ([ID]),
-    CONSTRAINT [FK_ProductImage_Product] FOREIGN KEY (ProductID) REFERENCES Products([ID]) ON DELETE CASCADE
+    CONSTRAINT [FK_ProductImages_Product] FOREIGN KEY (ProductID) REFERENCES Products([ID]) ON DELETE CASCADE
 )

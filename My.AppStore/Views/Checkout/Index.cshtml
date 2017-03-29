@@ -13,6 +13,13 @@
     {
         @Html.ValidationSummary(false, null, new { @class = "alert alert-danger" })
     }
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.EmailAddress, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.EmailAddress, new { @class = "form-control", placeholder = "Email" })
+        @Html.ValidationMessageFor(x => x.EmailAddress)
+    </div>
+
     <div class="form-group">
         @Html.LabelFor(x => x.ShippingAddress1, new { @class = "control-label" })
         @Html.TextBoxFor(x => x.ShippingAddress1, new { @class = "form-control", placeholder = "Address" })
@@ -29,27 +36,147 @@
         @Html.DropDownListFor(x => x.ShippingCountry, countries, new { @class = "form-control", placeholder = "State" })
         @Html.ValidationMessageFor(x => x.ShippingCountry)
     </div>
+
     <div class="form-group">
         @Html.LabelFor(x => x.ShippingCity, new { @class = "control-label" })
         @Html.TextBoxFor(x => x.ShippingCity, new { @class = "form-control", placeholder = "City" })
         @Html.ValidationMessageFor(x => x.ShippingCity)
     </div>
+
     <div class="form-group">
         @Html.LabelFor(x => x.ShippingState, new { @class = "control-label" })
         @Html.DropDownListFor(x => x.ShippingState, states, new { @class = "form-control", placeholder = "State" })
         @Html.ValidationMessageFor(x => x.ShippingState)
     </div>
+
     <div class="form-group">
         @Html.LabelFor(x => x.ZipCode, new { @class = "control-label" })
         @Html.TextBoxFor(x => x.ZipCode, new { @class = "form-control", placeholder = "Zip Code" })
         @Html.ValidationMessageFor(x => x.ZipCode)
     </div>
+
+    <button name="validateshipping" id="validateshipping" class="btn btn-default">Validate Address</button>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.CreditCardNumber, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.CreditCardNumber, new { @class = "form-control", placeholder = "Card Number" })
+        @Html.ValidationMessageFor(x => x.CreditCardNumber)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.CreditCardName, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.CreditCardName, new { @class = "form-control", placeholder = "Name On Card" })
+        @Html.ValidationMessageFor(x => x.CreditCardName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.CreditCardVerificationValue, new { @class = "control-label" })
+        @Html.TextBoxFor(x => x.CreditCardVerificationValue, new { @class = "form-control", placeholder = "CVV" })
+        @Html.ValidationMessageFor(x => x.CreditCardVerificationValue)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.CreditCardExpiration, new { @class = "control-label" })
+        <input type="date" name="CreditCardExpiration" class="form-control" />
+        @Html.ValidationMessageFor(x => x.CreditCardExpiration)
+    </div>
+
     <input type="submit" value="Place Order" class="btn btn-primary" />
+
+
+    <!-- Bootstrap Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Address Validation</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4">
+                            <div class="well">
+                                <dl class="address">
+                                    <dt>@Html.LabelFor(x => x.ShippingAddress1)</dt>
+                                    <dd class="address1"></dd>
+                                    <dt>@Html.LabelFor(x => x.ShippingAddress2)</dt>
+                                    <dd class="address2"></dd>
+                                    <dt>@Html.LabelFor(x => x.ShippingCity)</dt>
+                                    <dd class="city"></dd>
+                                    <dt>@Html.LabelFor(x => x.ShippingState)</dt>
+                                    <dd class="state"></dd>
+                                    <dt>@Html.LabelFor(x => x.ZipCode)</dt>
+                                    <dd class="zip"></dd>
+                                    <dt>Selected</dt>
+                                    <dd><input type="radio" name="shipping" /></dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="addressSave">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 @section Scripts{
     <script type="text/javascript">
     $(document).ready(function () {
+        $('#validateshipping').click(function (event) {
+            var street1 = $('#ShippingAddress1').val();
+            var street2 = $('#ShippingAddress2').val();
+            var city = $('#ShippingCity').val();
+            var state = $('#ShippingState').val();
+            var zip = $('#ZipCode').val();
+            $.post("/checkout/ValidateAddress",
+                {
+                    street1: street1,
+                    street2: street2,
+                    city: city,
+                    state: state,
+                    zip: zip
+                }).done(function (data) {
+
+                    $('.address1').text(street1);
+                    $('.address2').text(street2);
+                    $('.city').text(city);
+                    $('.state').text(state);
+                    $('.zip').text(zip);
+
+                    var addressTemplate = $('dl.address').parent().parent();
+                    var addressContainer = addressTemplate.parent();
+                    for (var i = 0; i < data.length; i++) {
+                        var clone = addressTemplate.clone();
+                        clone.find('.address1').text(data[i].DeliveryLine1);
+                        clone.find('.address2').text(data[i].DeliveryLine2);
+                        clone.find('.city').text(data[i].Components.CityName);
+                        clone.find('.state').text(data[i].Components.State);
+                        clone.find('.zip').text(data[i].Components.ZipCode + "-" + data[i].Components.Plus4Code);
+
+                        clone.appendTo(addressContainer);
+                    }
+
+                    $('#myModal').modal('toggle');
+                    console.log(data);
+                });
+
+            event.preventDefault();
+            return false;
+        });
+
+        $('#addressSave').click(function (event) {
+            var selectedAddress = $('input[name=shipping]:checked').parent().parent();
+            $('#ShippingAddress1').val(selectedAddress.children(".address1").text());
+            $('#ShippingAddress2').val(selectedAddress.children(".address2").text());
+            $('#ShippingCity').val(selectedAddress.children(".city").text());
+            $('#ShippingState').val(selectedAddress.children(".state").text());
+            $('#ZipCode').val(selectedAddress.children(".zip").text());
+        });
+
         $('.input-validation-error').parents('.form-group').addClass('has-error');
         $('.field-validation-error').addClass('text-danger');
 
@@ -77,10 +204,8 @@
 
                 $('#ShippingState').trigger("chosen:updated");
 
-
             });
         });
-
     });
     </script>
 }

@@ -83,9 +83,13 @@ INSERT INTO ProductImages([FilePath], ProductID, AltText) VALUES
 ('/content/images/mutagen.png', (SELECT TOP 1 ID FROM Products WHERE Name = 'Mutagen'), 'Mutagen'),
 ('/content/images/maze.jpg', (SELECT TOP 1 ID FROM Products WHERE Name = 'The Labyrinth'), 'The Labyrinth')
 
+INSERT INTO Categories(Name, [Description]) VALUES
+('Application', 'Any app whose purpose is anything besides play.'),
+('Game', 'Any app whose purpose is play.')
+
 SELECT Name, Price, [Description], COUNT(*)
 FROM Products
 GROUP BY Name, Price, [Description]
 HAVING COUNT(*) > 1;
 
-SELECT * FROM AspNetUsers
+SELECT * FROM ProductImages
