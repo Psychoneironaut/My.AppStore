@@ -51,7 +51,7 @@ namespace My.AppStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Price,Description,Inventory,Created,Modified")] Product product, HttpPostedFileBase image)
+        public ActionResult Create([Bind(Include = "ID,Name,Price,Description,Created,Modified")] Product product, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {

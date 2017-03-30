@@ -88,12 +88,11 @@ INSERT INTO Categories(Name, [Description]) VALUES
 ('Game', 'Any app whose purpose is play.')
 
 INSERT INTO CategoriesProducts(CategoryID, ProductID) VALUES
-((SELECT TOP 1 ID FROM Categories WHERE Name = 'Applications'), (SELECT TOP 1 ID FROM Products WHERE Name = 'Goal Tracker')),
-((SELECT TOP 1 ID FROM Categories WHERE Name = 'Games'), (SELECT TOP 1 ID FROM Products WHERE Name = 'Dimensia'))
+((SELECT TOP 1 ID FROM Categories WHERE Name = 'Game'), (SELECT TOP 1 ID FROM Products WHERE Name = 'Dimensia'))
 
-SELECT Name, Price, [Description], COUNT(*)
-FROM Products
-GROUP BY Name, Price, [Description]
-HAVING COUNT(*) > 1;
+--SELECT Name, Price, [Description], COUNT(*)
+--FROM Products
+--GROUP BY Name, Price, [Description]
+--HAVING COUNT(*) > 1;
 
-SELECT * FROM ProductImages
+--SELECT * FROM ProductImages

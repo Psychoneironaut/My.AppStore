@@ -11,15 +11,24 @@
 {
     <div class="row">
         <div class="col-xs-12">
-            <div class="well">
                 <h2>@Model.ElementAt(i).Name</h2>
-            </div>
-            <div class="well">
+            
                 @for (int j = 0; j < Model.ElementAt(i).Products.Count(); j++)
                 {
-                    <h3>@Model.ElementAt(i).Products.ElementAt(j).Name</h3>
-                }
-            </div>
+                    <div class="col-xs-4 well">
+                        <h3>@Model.ElementAt(i).Products.ElementAt(j).Name</h3>
+                        <img style="max-width:100%; max-height:100%" src="@Model.ElementAt(i).Products.ElementAt(j).Images.FirstOrDefault()" />
+                        <p>@Model.ElementAt(i).Products.ElementAt(j).Description</p>
+                        <div class="row well" style="background:green;">
+                            <div class="col-xs-6">
+                                <p>@Model.ElementAt(i).Products.ElementAt(j).Price.Value.ToString("C")</p>
+                            </div>
+                            <div class="col-xs-6">
+                                @Html.ActionLink("View Details", "Index", "Product", new { ID = Model.ElementAt(i).Products.ElementAt(j).ID }, new { @class = "btn btn-default" })
+                            </div>
+                        </div>
+                    </div>
+                }    
         </div>
     </div>
 }

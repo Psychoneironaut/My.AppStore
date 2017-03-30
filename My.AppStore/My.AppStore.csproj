@@ -213,44 +213,44 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReviewsController.cs" />
     <Compile Include="Models\Address.cs">
-      <DependentUpon>AppStoreModels.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\AppStoreModels.Context.cs">
+    <Compile Include="Models\AppStoreEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AppStoreModels.Context.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\AppStoreModels.cs">
+    <Compile Include="Models\AppStoreEntities.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AppStoreModels.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\AppStoreModels.Designer.cs">
+    <Compile Include="Models\AppStoreEntities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AppStoreModels.edmx</DependentUpon>
+      <DependentUpon>AppStoreEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetRole.cs">
-      <DependentUpon>AppStoreModels.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUser.cs">
-      <DependentUpon>AppStoreModels.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUserClaim.cs">
-      <DependentUpon>AppStoreModels.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUserLogin.cs">
-      <DependentUpon>AppStoreModels.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CategoriesProduct.cs">
-      <DependentUpon>AppStoreModels.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Category.cs">
-      <DependentUpon>AppStoreModels.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\Country.cs">
-      <DependentUpon>AppStoreModels.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Controllers\MyAccountController.cs" />
@@ -265,24 +265,24 @@
     <Compile Include="Models\CountryModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\Order.cs">
-      <DependentUpon>AppStoreModels.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\OrdersProduct.cs">
-      <DependentUpon>AppStoreModels.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Product.cs">
-      <DependentUpon>AppStoreModels.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProductImage.cs">
-      <DependentUpon>AppStoreModels.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\Review.cs">
-      <DependentUpon>AppStoreModels.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\State.cs">
-      <DependentUpon>AppStoreModels.tt</DependentUpon>
+      <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StateModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -293,9 +293,6 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Images\dimensia.png" />
-    <Content Include="Content\Images\maze.jpg" />
-    <Content Include="Content\Images\mutagen.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -326,24 +323,24 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <EntityDeploy Include="Models\AppStoreModels.edmx">
+    <EntityDeploy Include="Models\AppStoreEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AppStoreModels.Designer.cs</LastGenOutput>
+      <LastGenOutput>AppStoreEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\AppStoreModels.edmx.diagram">
-      <DependentUpon>AppStoreModels.edmx</DependentUpon>
+    <Content Include="Models\AppStoreEntities.edmx.diagram">
+      <DependentUpon>AppStoreEntities.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\WillsAppStore - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
-    <Content Include="Models\AppStoreModels.Context.tt">
+    <Content Include="Models\AppStoreEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AppStoreModels.edmx</DependentUpon>
-      <LastGenOutput>AppStoreModels.Context.cs</LastGenOutput>
+      <DependentUpon>AppStoreEntities.edmx</DependentUpon>
+      <LastGenOutput>AppStoreEntities.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\AppStoreModels.tt">
+    <Content Include="Models\AppStoreEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AppStoreModels.edmx</DependentUpon>
-      <LastGenOutput>AppStoreModels.cs</LastGenOutput>
+      <DependentUpon>AppStoreEntities.edmx</DependentUpon>
+      <LastGenOutput>AppStoreEntities.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -408,6 +405,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

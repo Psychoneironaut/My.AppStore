@@ -28,7 +28,6 @@ namespace My.AppStore.Models
         public Nullable<decimal> Price { get; set; }
         public string Description { get; set; }
         public bool Active { get; set; }
-        //public int Inventory { get; set; }
         public Nullable<System.DateTime> Created { get; set; }
         public Nullable<System.DateTime> Modified { get; set; }
     
