@@ -3,13 +3,6 @@
     ViewBag.Title = Model.Name;
 }
 
-@if (ViewBag.LoadTime != null)
-{
-    <div class="alert">
-        ViewBag.LoadTime
-    </div>
-}
-
 <div class="row">
     <div class="col-xs-4 well-sm">
         @foreach (var img in Model.Images)
