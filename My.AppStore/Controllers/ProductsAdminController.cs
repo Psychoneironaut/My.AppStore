@@ -135,7 +135,7 @@ namespace My.AppStore.Controllers
                 product.Modified = DateTime.UtcNow;
 
                 db.Entry(product).State = EntityState.Modified;
-
+                //TODO: Figure out why/fix the NullReferenceException thrown when editing products
                 string fileName = image.FileName;
 
                 if (ConfigurationManager.AppSettings["UseLocalStorage"] == "true")

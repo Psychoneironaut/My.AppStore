@@ -207,10 +207,11 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\CategoriesProductsController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReviewsController.cs" />
-    <Compile Include="Controllers\SCAFFOLD CATEGORY CONRTOLLER.cs" />
     <Compile Include="Models\Address.cs">
       <DependentUpon>AppStoreModels.tt</DependentUpon>
     </Compile>
@@ -332,6 +333,7 @@
     <Content Include="Models\AppStoreModels.edmx.diagram">
       <DependentUpon>AppStoreModels.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\WillsAppStore - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Models\AppStoreModels.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -393,6 +395,16 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\MyAccount\ConfirmSent.cshtml" />
+    <Content Include="Views\Categories\Create.cshtml" />
+    <Content Include="Views\Categories\Delete.cshtml" />
+    <Content Include="Views\Categories\Details.cshtml" />
+    <Content Include="Views\Categories\Edit.cshtml" />
+    <Content Include="Views\Categories\Index.cshtml" />
+    <Content Include="Views\CategoriesProducts\Create.cshtml" />
+    <Content Include="Views\CategoriesProducts\Delete.cshtml" />
+    <Content Include="Views\CategoriesProducts\Details.cshtml" />
+    <Content Include="Views\CategoriesProducts\Edit.cshtml" />
+    <Content Include="Views\CategoriesProducts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

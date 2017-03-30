@@ -12,7 +12,7 @@ using System.Web.Security;
 
 namespace My.AppStore.Controllers
 {
-    public class AccountController : Controller
+    public class MyAccountController : Controller
     {
         // GET: Account
         public ActionResult Index()
@@ -53,7 +53,7 @@ namespace My.AppStore.Controllers
                     {
                         User u = manager.FindByName(model.EmailAddress);
 
-                        // Braintree stuff
+                        // Braintree
                         string merchantId = ConfigurationManager.AppSettings["Braintree.MerchantID"];
                         string publicKey = ConfigurationManager.AppSettings["Braintree.PublicKey"];
                         string privateKey = ConfigurationManager.AppSettings["Braintree.PrivateKey"];
@@ -121,7 +121,6 @@ namespace My.AppStore.Controllers
 
         public ActionResult Login()
         {
-
             return View(new LoginModel());
         }
 
