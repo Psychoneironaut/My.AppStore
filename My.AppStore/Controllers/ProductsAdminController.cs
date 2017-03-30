@@ -13,7 +13,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace My.AppStore.Controllers
 {
-    //[Authorize]
+    //[Authorize(Roles = "Admin")] Fix this with better way of doing roles
     public class ProductsAdminController : Controller
     {
         private AppStoreEntities db = new AppStoreEntities();

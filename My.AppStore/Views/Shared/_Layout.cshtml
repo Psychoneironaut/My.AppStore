@@ -23,6 +23,11 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @*Add this if statement in order to let Admins edit; LOOK UP SimpleMembershipProvider and use that for roles
+                    @if(User.Identity.IsAuthenticated && (User.IsInRole("Admin")))
+                    {
+                        <li>@Html.ActionLink("ProductManager", "Index", "ProductsAdmin")</li>
+                    }*@
                 </ul>
 
                 @Html.Partial("_Cart")

@@ -14,27 +14,12 @@
             <div class="well">
                 <h2>@Model.ElementAt(i).Name</h2>
             </div>
-        </div>
-    </div>
-
-    <div class="row">
-        @for (int j = 0; j < Model.ElementAt(i).Products.Count(); j++)
-        {
-            <div class="col-xs-4">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <h3>@Model.ElementAt(i).Products.ElementAt(j).Name</h3>
-                    </div>
-                    <div class="panel-body">
-                        <p>
-                            <img style="max-width:100%; max-height:100%" src="@Model.ElementAt(i).Products.ElementAt(j).Images.FirstOrDefault()" />
-                        </p>
-                        <p>
-                            @Html.ActionLink("View", "Index", "Product", new { ID = Model.ElementAt(i).Products.ElementAt(j).ID }, new { @class = "btn btn-default" })
-                        </p>
-                    </div>
-                </div>
+            <div class="well">
+                @for (int j = 0; j < Model.ElementAt(i).Products.Count(); j++)
+                {
+                    <h3>@Model.ElementAt(i).Products.ElementAt(j).Name</h3>
+                }
             </div>
-        }
+        </div>
     </div>
 }

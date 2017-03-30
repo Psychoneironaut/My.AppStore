@@ -87,6 +87,10 @@ INSERT INTO Categories(Name, [Description]) VALUES
 ('Application', 'Any app whose purpose is anything besides play.'),
 ('Game', 'Any app whose purpose is play.')
 
+INSERT INTO CategoriesProducts(CategoryID, ProductID) VALUES
+((SELECT TOP 1 ID FROM Categories WHERE Name = 'Applications'), (SELECT TOP 1 ID FROM Products WHERE Name = 'New Game')),
+((SELECT TOP 1 ID FROM Categories WHERE Name = 'Games'), (SELECT TOP 1 ID FROM Products WHERE Name = 'Dimensia'))
+
 SELECT Name, Price, [Description], COUNT(*)
 FROM Products
 GROUP BY Name, Price, [Description]
