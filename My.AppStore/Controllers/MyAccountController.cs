@@ -44,7 +44,6 @@ namespace My.AppStore.Controllers
                     {
                         UserName = model.EmailAddress,
                         Email = model.EmailAddress
-                        //EmailConfirmed = true
                     };
 
                     IdentityResult result = manager.Create(user, model.Password);
@@ -53,7 +52,7 @@ namespace My.AppStore.Controllers
                     {
                         User u = manager.FindByName(model.EmailAddress);
 
-                        // Braintree
+                        // Creates customer record in Braintree
                         string merchantId = ConfigurationManager.AppSettings["Braintree.MerchantID"];
                         string publicKey = ConfigurationManager.AppSettings["Braintree.PublicKey"];
                         string privateKey = ConfigurationManager.AppSettings["Braintree.PrivateKey"];
@@ -74,7 +73,7 @@ namespace My.AppStore.Controllers
                         message.Subject = string.Format("Please confirm your account.");
                         message.From = new SendGrid.Helpers.Mail.EmailAddress("admin@apps.willmabrey.com", "Will Mabrey");
                         message.AddTo(new SendGrid.Helpers.Mail.EmailAddress(model.EmailAddress));
-                        SendGrid.Helpers.Mail.Content contents = new SendGrid.Helpers.Mail.Content("text/html", string.Format("<a href=\"{0}\">Confirm Account</a>", Request.Url.GetLeftPart(UriPartial.Authority) + "/Account/Confirm/" + confirmationToken + "?email=" + model.EmailAddress));
+                        SendGrid.Helpers.Mail.Content contents = new SendGrid.Helpers.Mail.Content("text/html", string.Format("<a href=\"{0}\">Confirm Account</a>", Request.Url.GetLeftPart(UriPartial.Authority) + "/MyAccount/Confirm/" + confirmationToken + "?email=" + model.EmailAddress));
 
                         message.AddContent(contents.Type, contents.Value);
                         SendGrid.Response response = await client.SendEmailAsync(message);
