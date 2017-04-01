@@ -26,7 +26,7 @@
             <tr>
                 <td>@item.Product.Name</td>
                 <td>@item.Quantity</td>
-                <td><button disabled class="btn btn-default">Remove</button></td>
+                <td>@Html.ActionLink("Remove", "RemoveItem", "Cart", null, new { @class = "btn btn-primary" })</td>
                 <td>@((item.Product.Price ?? 0m).ToString("C"))</td>
             </tr>
         }

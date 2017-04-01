@@ -70,7 +70,7 @@ namespace My.AppStore.Controllers
 
                         SendGrid.SendGridClient client = new SendGrid.SendGridClient(sendGridApiKey);
                         SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
-                        message.Subject = string.Format("Please confirm your account.");
+                        message.Subject = string.Format("Please confirm your account");
                         message.From = new SendGrid.Helpers.Mail.EmailAddress("admin@apps.willmabrey.com", "Will Mabrey");
                         message.AddTo(new SendGrid.Helpers.Mail.EmailAddress(model.EmailAddress));
                         SendGrid.Helpers.Mail.Content contents = new SendGrid.Helpers.Mail.Content("text/html", string.Format("<a href=\"{0}\">Confirm Account</a>", Request.Url.GetLeftPart(UriPartial.Authority) + "/MyAccount/Confirm/" + confirmationToken + "?email=" + model.EmailAddress));

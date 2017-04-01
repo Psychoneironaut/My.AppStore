@@ -112,11 +112,12 @@ namespace My.AppStore.Controllers
 
                     SendGrid.SendGridClient client = new SendGrid.SendGridClient(sendGridApiKey);
                     SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
-                    message.SetTemplateId("524c7845-3ed9-4d53-81c8-b467443f8c5c");
+                    //TODO: Go into SendGrid and set up a template and insert the if below
+                    //message.SetTemplateId("524c7845-3ed9-4d53-81c8-b467443f8c5c");
                     message.Subject = string.Format("Receipt for order {0}", o.ID);
-                    message.From = new SendGrid.Helpers.Mail.EmailAddress("admin@boardgames.codingtemple.com", "Coding Temple Board Games Administrator");
-                    message.AddTo(new SendGrid.Helpers.Mail.EmailAddress(model.EmailAddress));
-                    SendGrid.Helpers.Mail.Content contents = new SendGrid.Helpers.Mail.Content("text/plain", "Thank you for placing an order with Coding Temple Board Games");
+                    message.From = new SendGrid.Helpers.Mail.EmailAddress("admin@apps.willmabrey.com", "Will Mabrey");
+                    message.AddTo(new SendGrid.Helpers.Mail.EmailAddress(o.BuyerEmail));
+                    SendGrid.Helpers.Mail.Content contents = new SendGrid.Helpers.Mail.Content("text/plain", "Thank you for placing an order with Will's App Store. Your business is much appreciated.");
 
                     message.AddSubstitution("%ordernum%", o.ID.ToString());
                     message.AddContent(contents.Type, contents.Value);

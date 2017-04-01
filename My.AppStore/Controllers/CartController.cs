@@ -62,5 +62,14 @@ namespace My.AppStore.Controllers
             ViewBag.PageGenerationTime = DateTime.UtcNow;
             return View(model);
         }
+
+        public ActionResult RemoveItem(CartItemModel[] items)
+        {
+            if(items != null)
+            {
+                items.ToList().RemoveAt(0);
+            }
+            return View(new CartItemModel());
+        }
     }
 }
