@@ -37,10 +37,20 @@ namespace My.AppStore.Controllers
         }
 
         // GET: Reviews/Create
-        public ActionResult Create()
+        public ActionResult Create(string name, int id)
         {
-            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name");
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.ProductName = name;
+                //ViewBag.ProductID = new SelectList(db.Products, "ID", "Name", review.ProductID);
+                ViewBag.ProductID = id;
+                return View(new Review());
+            }
+            TempData.Add("ReviewAttempted", true);
+            //for when you try to redirect the usr to the create reviews
+            //TempData.Add("ThisProductName", name);
+            //TempData.Add("ThisProductID", id);
+            return RedirectToAction("Login", "MyAccount");
         }
 
         // POST: Reviews/Create
@@ -48,17 +58,29 @@ namespace My.AppStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,ProductID,Email,Rating,Body,Created,Modified")] Review review)
+        public ActionResult Create([Bind(Include = "ID,ProductID,Email,Rating,Body,Created,Modified")] Review review, int id)
         {
             if (ModelState.IsValid)
             {
-                db.Reviews.Add(review);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                using (AppStoreEntities entities = new AppStoreEntities())
+                {
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        review.Created = DateTime.UtcNow;
+                        review.Modified = DateTime.UtcNow;
+                        review.ProductID = id;
+                        AspNetUser currentUser = entities.AspNetUsers.Single(x => x.UserName == User.Identity.Name);
+                        review.Email = currentUser.Email;
 
-            ViewBag.ProductID = new SelectList(db.Products, "ID", "Name", review.ProductID);
-            return View(review);
+                        db.Reviews.Add(review);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            return RedirectToAction("Index", "Product", new { id = id });
+
+            //ViewBag.ProductID = new SelectList(db.Products, "ID", "Name", review.ProductID);
+            //return View(review);
         }
 
         // GET: Reviews/Edit/5

@@ -126,6 +126,7 @@
           <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="Created" Type="datetime" />
           <Property Name="Modified" Type="datetime" />
+          <Property Name="SubTotal" Type="money" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductImages">
           <Key>
@@ -600,6 +601,7 @@ warning 6002: The table/view 'AppStore.dbo.States' does not have a primary key d
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="Created" Type="DateTime" Precision="3" />
           <Property Name="Modified" Type="DateTime" Precision="3" />
+          <Property Name="SubTotal" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <NavigationProperty Name="Order" Relationship="Self.FK_OrdersProducts_Order" FromRole="OrdersProducts" ToRole="Orders" />
           <NavigationProperty Name="Product" Relationship="Self.FK_OrdersProducts_Product" FromRole="OrdersProducts" ToRole="Products" />
         </EntityType>
@@ -1029,6 +1031,7 @@ warning 6002: The table/view 'AppStore.dbo.States' does not have a primary key d
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

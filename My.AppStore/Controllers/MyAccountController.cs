@@ -140,6 +140,12 @@ namespace My.AppStore.Controllers
                     if (manager.CheckPassword(user, model.Password))
                     {
                         FormsAuthentication.SetAuthCookie(model.EmailAddress, true);
+                        //Something similar to this should redirect the user to the Create Review page once they log in. TempData likely not the way to go, unless you perhaps
+                        //changed it. Sam mentioned using Filters, global filters just something like that
+                        //if (TempData["ReviewAttempted"] != null)
+                        //{
+                        //    return RedirectToAction("Create", "Reviews", new { name = TempData["ThisProductName"], id = TempData["ThisProductID"] });
+                        //}
                         return RedirectToAction("Index", "Home");
                     }
                     ModelState.AddModelError("EmailAddress", "Invalid username and/or password.");
@@ -150,7 +156,107 @@ namespace My.AppStore.Controllers
 
         public ActionResult Logout()
         {
+            if (Request.Cookies["orderNumber"] != null)
+            {
+                var c = new HttpCookie("orderNumber");
+                c.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(c);
+            }
             FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult Ok()
+        {
+            return View();
+        }
+
+        public ActionResult ResetSent()
+        {
+            return View();
+        }
+
+        public ActionResult ForgotPassword()
+        {
+            return View(new ForgotPasswordViewModel());
+        }
+
+        public ActionResult ResetPassword(string id, string EmailAddress)
+        {
+            return View(new ResetPasswordViewModel(id, EmailAddress));
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (IdentityModels entities = new IdentityModels())
+                {
+
+                    var userStore = new UserStore<User>(entities);
+                    var manager = new UserManager<User>(userStore);
+
+                    manager.UserTokenProvider = new EmailTokenProvider<User>();
+
+                    var user = manager.FindByName(model.Email);
+                    // If user has to activate his email to confirm his account, the use code listing below
+                    //if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                    //{
+                    //    return Ok();
+                    //}
+
+
+                    string code = await manager.GeneratePasswordResetTokenAsync(user.Id);
+
+
+                    string sendGridKey = System.Configuration.ConfigurationManager.AppSettings["SendGrid.ApiKey"];
+                    SendGrid.SendGridClient client = new SendGrid.SendGridClient(sendGridKey);
+                    SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
+                    message.Subject = string.Format("Reset Password");
+                    message.From = new SendGrid.Helpers.Mail.EmailAddress("will@willmabrey.com", "Will Mabrey");
+                    message.AddTo(new SendGrid.Helpers.Mail.EmailAddress(model.Email));
+
+                    SendGrid.Helpers.Mail.Content contents = new SendGrid.Helpers.Mail.Content("text/html", string.Format("<a href=\"{0}\">Reset Password</a>", Request.Url.GetLeftPart(UriPartial.Authority) + "/MyAccount/ResetPassword/" + code + "?EmailAddress=" + model.Email));
+
+                    message.AddContent(contents.Type, contents.Value);
+                    SendGrid.Response response = await client.SendEmailAsync(message);
+
+                    //await client.SendEmailAsync(user.Id, "Reset Password", $"Please reset your password by using this {code}");
+                    return RedirectToAction("ResetSent");
+                }
+
+            }
+            return View();
+
+            // If we got this far, something failed, redisplay form
+
+        }
+
+        [HttpPost]
+        public ActionResult ResetPassword(ResetPasswordViewModel model)
+        {
+            using (IdentityModels entities = new IdentityModels())
+            {
+                var userStore = new UserStore<User>(entities);
+
+                var manager = new UserManager<User>(userStore);
+                var user = manager.FindByName(model.EmailAddress);
+
+                manager.UserTokenProvider = new EmailTokenProvider<User>();
+
+                if (user != null)
+                {
+                    var result = manager.ResetPassword(user.Id, model.Code, model.NewPassword);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Login");
+                    }
+
+                }
+            }
+
             return RedirectToAction("Index", "Home");
         }
     }

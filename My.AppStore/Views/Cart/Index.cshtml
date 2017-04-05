@@ -4,7 +4,7 @@
 }
 
 <h2>Cart</h2>
-<input type="hidden" value="@ViewBag.PageGenerationTime" />
+@*<input type="hidden" value="@ViewBag.PageGenerationTime" />*@
 @if (TempData["AddedToCart"] != null)
 {
     <div class="alert alert-success">
@@ -26,7 +26,7 @@
             <tr>
                 <td>@item.Product.Name</td>
                 <td>@item.Quantity</td>
-                <td>@Html.ActionLink("Remove", "RemoveItem", "Cart", null, new { @class = "btn btn-primary" })</td>
+                <td>@Html.ActionLink("Remove", "RemoveItem", "Cart", new { id = item.Product.ID }, new { @class = "btn btn-primary" })</td>
                 <td>@((item.Product.Price ?? 0m).ToString("C"))</td>
             </tr>
         }

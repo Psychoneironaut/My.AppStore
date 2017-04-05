@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="32f143fe194d47628974a2f2776ae309" Name="Diagram1">
+      <Diagram DiagramId="c945460675b242d5984fae8d5fd2c382" Name="Diagram1">
         <EntityTypeShape EntityType="AppStoreModel.Address" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="AppStoreModel.AspNetRole" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="AppStoreModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="5.625" IsExpanded="true" />
@@ -14,7 +14,7 @@
         <EntityTypeShape EntityType="AppStoreModel.CategoriesProduct" Width="1.5" PointX="9.75" PointY="7.5" IsExpanded="true" />
         <EntityTypeShape EntityType="AppStoreModel.Country" Width="1.5" PointX="11.75" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="AppStoreModel.Order" Width="1.5" PointX="7.5" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AppStoreModel.OrdersProduct" Width="1.5" PointX="9.75" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppStoreModel.OrdersProduct" Width="1.5" PointX="9.75" PointY="3.375" IsExpanded="true" />
         <EntityTypeShape EntityType="AppStoreModel.ProductImage" Width="1.5" PointX="9.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AppStoreModel.Product" Width="1.5" PointX="7.5" PointY="9.125" IsExpanded="true" />
         <EntityTypeShape EntityType="AppStoreModel.Review" Width="1.5" PointX="9.75" PointY="13.875" IsExpanded="true" />

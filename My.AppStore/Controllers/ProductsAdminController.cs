@@ -57,7 +57,8 @@ namespace My.AppStore.Controllers
             {
                 product.Created = DateTime.UtcNow;
                 product.Modified = DateTime.UtcNow;
-
+                //TODO: This is throwing an Error too, I think it's just because it's null. Do a check for if it's null.Same for Edit--if you don't explicitly
+                //insert an image into the image field then it's going to throw a NullReferenceExceptions
                 string fileName = image.FileName;
 
                 if (ConfigurationManager.AppSettings["UseLocalStorage"] == "true")
@@ -69,7 +70,7 @@ namespace My.AppStore.Controllers
                         i++;
                     }
                     image.SaveAs(Server.MapPath("/content/images/" + fileName));
-                    fileName = "/content/images/" + fileName;
+                    //fileName = "/content/images/" + fileName;
                 }
                 else
                 {
@@ -191,6 +192,7 @@ namespace My.AppStore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            //This line of code
             Product product = db.Products.Find(id);
             if (product == null)
             {

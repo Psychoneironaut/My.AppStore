@@ -16,5 +16,7 @@ namespace My.AppStore.Models
         public IEnumerable<string> Images { get; set; }
 
         public string Description { get; set; }
+
+        public ReviewModel[] Reviews { get; set; }
     }
 }

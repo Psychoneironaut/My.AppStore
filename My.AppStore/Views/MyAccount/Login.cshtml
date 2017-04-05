@@ -3,24 +3,79 @@
     ViewBag.Title = "Login";
 }
 
-@if (TempData["AccountConfirmed"] != null)
-{
-    <div class="alert alert-success">
-        <p>Your account has been confirmed. Please log in to continue.</p>
+<div class="my-form">
+    @if (TempData["AccountConfirmed"] != null)
+    {
+        <div class="alert alert-success">
+            <p>Your account has been confirmed. Please log in to continue.</p>
+        </div>
+    }
+
+    @if (TempData["ReviewAttempted"] != null)
+    {
+        <div class="alert alert-danger">
+            <p>You must be logged in to leave a review.</p>
+        </div>
+    }
+    @using (Html.BeginForm("ActionName", "ControllerName",
+                                         FormMethod.Post, new { @class = "form-container" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-title"><h2>Login</h2></div>
+        <div class="form-title">Email</div>
+        <div class="my-form">
+            @Html.TextBoxFor(x => x.EmailAddress, new { @class = "form-field", @type = "text", name = "name" })
+            @Html.ValidationMessageFor(x => x.EmailAddress)
+        </div>
+    <br />
+        <div class="form-title">Password</div>
+        <div class="my-form">
+            @Html.PasswordFor(x => x.Password, new { @class = "form-field", @type = "text", name = "password" })
+            @Html.ValidationMessageFor(x => x.Password)
+        </div>
+        <br />
+            <div class="my-form">
+                <div>
+                    <div style="display: flex; justify-content: space-around">
+                        <div class="submit-container">
+                            <input class="submit-button" type="submit" value="Login" />
+                            <input class="submit-button" type="button" value="Forgot Password?" onclick="location.href='@Url.Action("ForgotPassword", "MyAccount")'" />
+
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content:center">
+                        <div class="submit-container">
+                            @Html.ActionLink("Create New Account", "Register", "MyAccount", new { @class = "submit-button" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+
+<div class="loginContainter">
+    <h2 id="loginHeader">Login</h2>
+    <div class="loginContainter">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken();
+            <div class="loginCenter">
+                @Html.LabelFor(x => x.EmailAddress)
+                @Html.TextBoxFor(x => x.EmailAddress)
+                @Html.ValidationMessageFor(x => x.EmailAddress)
+            </div>
+            <div class="loginCenter">
+                @Html.LabelFor(x => x.Password)
+                @Html.PasswordFor(x => x.Password)
+                @Html.ValidationMessageFor(x => x.Password)
+            </div>
+
+
+
+            <input type="submit" value="Login" />
+            @Html.ActionLink("Create New Account", "Register", "Account", new { @class = "btn btn-default" })
+
+            <input type="button" value="ForgotPassword" onclick="location.href='@Url.Action("ForgotPassword", "Account")'" />
+        }
     </div>
-}
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    @Html.LabelFor(x => x.EmailAddress)
-    @Html.TextBoxFor(x => x.EmailAddress)
-    @Html.ValidationMessageFor(x => x.EmailAddress)
-
-    @Html.LabelFor(x => x.Password)
-    @Html.PasswordFor(x => x.Password)
-    @Html.ValidationMessageFor(x => x.Password)
-
-    <input type="submit" value="Login" />
-}
+</div>

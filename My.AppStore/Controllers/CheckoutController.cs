@@ -12,6 +12,9 @@ namespace My.AppStore.Controllers
 {
     public class CheckoutController : Controller
     {
+        string WhatWasOrdered = "";
+        string WhereTo = "";
+
         // GET: Checkout
         public ActionResult Index()
         {
@@ -71,6 +74,8 @@ namespace My.AppStore.Controllers
                     newShippingAddress.Country = model.ShippingCountry;
                     o.Address1 = newShippingAddress;
 
+                    WhereTo = ("\n Your Order will be shipped to the following address: \n" + model.ShippingAddress1 + "\n " + model.ShippingAddress2 + "\n " + model.ShippingCity + "\n " + model.ShippingState + "\n " + model.ZipCode);
+
                     entities.sp_CompleteOrder(o.ID);
 
                     string merchantId = ConfigurationManager.AppSettings["Braintree.MerchantID"];
@@ -117,22 +122,30 @@ namespace My.AppStore.Controllers
                     message.Subject = string.Format("Receipt for order {0}", o.ID);
                     message.From = new SendGrid.Helpers.Mail.EmailAddress("admin@apps.willmabrey.com", "Will Mabrey");
                     message.AddTo(new SendGrid.Helpers.Mail.EmailAddress(o.BuyerEmail));
-                    SendGrid.Helpers.Mail.Content contents = new SendGrid.Helpers.Mail.Content("text/plain", "Thank you for placing an order with Will's App Store. Your business is much appreciated.");
 
+                    string prodcuctsReceipt = "You've Ordered: ";
+                    WhatWasOrdered = prodcuctsReceipt;
+
+                    foreach (var item in o.OrdersProducts)
+                    {
+                        string addition = string.Format("\n " + "{0} copies of {1}", item.Quantity, item.Product.Name);
+                        prodcuctsReceipt += addition;
+
+                    }
+
+
+                    SendGrid.Helpers.Mail.Content contents = new SendGrid.Helpers.Mail.Content("text/plain", string.Format("Thank you for ordering through Ye Olde App Store \n {0} {1}", prodcuctsReceipt, WhereTo));
                     message.AddSubstitution("%ordernum%", o.ID.ToString());
                     message.AddContent(contents.Type, contents.Value);
 
-                    //foreach (var item in o.OrderProducts)
-                    //{
-                    //    SendGrid.Helpers.Mail.Content contents2 = new SendGrid.Helpers.Mail.Content("text/plain", string.Format("You've ordered {0} copies of {1}", item.Quantity, item.Product.Name));
-
-                    //    message.AddContent(contents2.Type, contents2.Value);
-                    //}
-
                     SendGrid.Response response = await client.SendEmailAsync(message);
 
+                    o.TimeCompleted = DateTime.UtcNow;
+
+                    entities.SaveChanges();
+
                 }
-                return RedirectToAction("Index", "Receipt");
+                return RedirectToAction("profile", "Home");
             }
             return View(model);
         }

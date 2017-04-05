@@ -9,17 +9,22 @@ namespace My.AppStore.Controllers
 {
     public class CartController : Controller
     {
+        private AppStoreEntities db = new AppStoreEntities();
+
         // GET: Cart
         public ActionResult Index()
         {
+            ///////////
             CartModel model = new CartModel();
             using (AppStoreEntities entities = new AppStoreEntities())
             {
                 Order o = null;
+                //OrdersProduct item = null;
                 if (User.Identity.IsAuthenticated)
                 {
                     AspNetUser currentUser = entities.AspNetUsers.Single(x => x.UserName == User.Identity.Name);
                     o = currentUser.Orders.FirstOrDefault(x => x.TimeCompleted == null);
+                    //item = o.OrderProducts.FirstOrDefault(x => x.OrderID == o.ID);
                     if (o == null)
                     {
                         o = new Order();
@@ -28,12 +33,14 @@ namespace My.AppStore.Controllers
                         entities.SaveChanges();
                     }
                 }
+                ////////////
                 else
                 {
                     if (Request.Cookies.AllKeys.Contains("orderNumber"))
                     {
                         Guid orderNumber = Guid.Parse(Request.Cookies["orderNumber"].Value);
                         o = entities.Orders.FirstOrDefault(x => x.TimeCompleted == null && x.OrderNumber == orderNumber);
+                        //item = o.OrderProducts.FirstOrDefault(x => x.OrderID == o.ID);
                     }
                     if (o == null)
                     {
@@ -44,7 +51,7 @@ namespace My.AppStore.Controllers
                         entities.SaveChanges();
                     }
                 }
-
+                ///////////
                 model.Items = o.OrdersProducts.Select(x => new CartItemModel
                 {
                     Product = new ProductModel
@@ -59,17 +66,58 @@ namespace My.AppStore.Controllers
                 }).ToArray();
                 model.SubTotal = o.OrdersProducts.Sum(x => x.Product.Price * x.Quantity);
             }
-            ViewBag.PageGenerationTime = DateTime.UtcNow;
+            //ViewBag.PageGenerationTime = DateTime.UtcNow;
             return View(model);
         }
+        //////////
 
-        public ActionResult RemoveItem(CartItemModel[] items)
+        public ActionResult RemoveItem(int? id)
         {
-            if(items != null)
+            using (AppStoreEntities entities = new AppStoreEntities())
             {
-                items.ToList().RemoveAt(0);
+                if (User.Identity.IsAuthenticated)
+                {
+                    AspNetUser currentUser = entities.AspNetUsers.Single(x => x.UserName == User.Identity.Name);
+                    Order o = currentUser.Orders.FirstOrDefault(x => x.TimeCompleted == null);
+                    OrdersProduct item = o.OrdersProducts.FirstOrDefault(x => x.ProductID == id);
+                    if(item.Quantity == 1)
+                    {   
+                        item.Product.OrdersProducts = null;
+                        if (o.OrdersProducts.Count == 1)
+                        {
+                            o.OrdersProducts = null;
+                        }
+                    }
+                    else
+                    {
+                        item.Quantity -= 1;
+                    }
+                }
+                else
+                {
+                    if (Request.Cookies.AllKeys.Contains("orderNumber"))
+                    {
+                        Guid orderNumber = Guid.Parse(Request.Cookies["orderNumber"].Value);
+                        Order o = entities.Orders.FirstOrDefault(x => x.TimeCompleted == null && x.OrderNumber == orderNumber);
+                        OrdersProduct item = o.OrdersProducts.FirstOrDefault(x => x.ProductID == id);
+                        if (item.Quantity == 1)
+                        {
+                            item.Product.OrdersProducts = null;
+                            if (o.OrdersProducts.Count == 1)
+                            {
+                                o.OrdersProducts = null;
+                            }
+                        }
+                        else
+                        {
+                            item.Quantity -= 1;
+                        }
+                    }
+
+                }
+                entities.SaveChanges();
             }
-            return View(new CartItemModel());
+            return RedirectToAction("Index", "Cart");
         }
     }
 }

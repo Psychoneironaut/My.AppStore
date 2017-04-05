@@ -10,7 +10,6 @@ namespace My.AppStore.Controllers
     public class ProductController : Controller
     {
         // GET: Product
-        [OutputCache(Duration = 300)]
         public ActionResult Index(int? id)
         {
             using (AppStoreEntities entities = new AppStoreEntities())
@@ -25,8 +24,26 @@ namespace My.AppStore.Controllers
                     model.Price = product.Price;
                     model.Images = product.ProductImages.Select(x => x.FilePath).ToArray();
 
+                    model.Reviews = product.Reviews.Select(x => new ReviewModel
+                    {
+                        UserEmail = x.Email,
+                        ID = x.ID,
+                        Rating = x.Rating,
+                        Body = x.Body
+                    }).ToArray();
+
                     return View(model);
                 }
+
+                //var review = entities.Reviews.Find(id);
+                //if(review != null)
+                //{
+                //    ReviewModel model = new ReviewModel();
+                //    model.ID = review.ID;
+                //    model.UserEmail = review.Email;
+                //    model.Rating = review.Rating;
+                //    model.Body = review.Body;
+                //}
             }
 
             return HttpNotFound(string.Format("ID {0} Not Found", id));

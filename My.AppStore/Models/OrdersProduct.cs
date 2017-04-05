@@ -19,6 +19,7 @@ namespace My.AppStore.Models
         public int Quantity { get; set; }
         public Nullable<System.DateTime> Created { get; set; }
         public Nullable<System.DateTime> Modified { get; set; }
+        public decimal SubTotal { get; set; }
     
         public virtual Order Order { get; set; }
         public virtual Product Product { get; set; }

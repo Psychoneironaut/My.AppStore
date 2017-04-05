@@ -252,6 +252,7 @@
     <Compile Include="Models\Country.cs">
       <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ForgotPasswordViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Controllers\MyAccountController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -267,9 +268,12 @@
     <Compile Include="Models\Order.cs">
       <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\OrderContainerModel.cs" />
+    <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\OrdersProduct.cs">
       <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\OrderUserModel.cs" />
     <Compile Include="Models\Product.cs">
       <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
@@ -278,9 +282,11 @@
     </Compile>
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\ResetPasswordViewModel.cs" />
     <Compile Include="Models\Review.cs">
       <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ReviewModel.cs" />
     <Compile Include="Models\State.cs">
       <DependentUpon>AppStoreEntities.tt</DependentUpon>
     </Compile>
@@ -293,6 +299,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\woodsign.gif" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -330,6 +337,10 @@
     <Content Include="Models\AppStoreEntities.edmx.diagram">
       <DependentUpon>AppStoreEntities.edmx</DependentUpon>
     </Content>
+    <Content Include="fonts\Lucida Blackletter Regular.ttf" />
+    <Content Include="fonts\OldeEnglish.ttf" />
+    <Content Include="fonts\ALEAWBB_.TTF" />
+    <Content Include="fonts\ALEAWB__.TTF" />
     <None Include="Properties\PublishProfiles\WillsAppStore - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Models\AppStoreEntities.Context.tt">
@@ -402,6 +413,10 @@
     <Content Include="Views\CategoriesProducts\Details.cshtml" />
     <Content Include="Views\CategoriesProducts\Edit.cshtml" />
     <Content Include="Views\CategoriesProducts\Index.cshtml" />
+    <Content Include="Views\MyAccount\ForgotPassword.cshtml" />
+    <Content Include="Views\MyAccount\ResetPassword.cshtml" />
+    <Content Include="Views\MyAccount\ResetSent.cshtml" />
+    <Content Include="Views\Home\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

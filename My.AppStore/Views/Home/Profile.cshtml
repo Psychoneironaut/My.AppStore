@@ -1,0 +1,32 @@
+﻿@model My.AppStore.Models.OrderContainerModel
+@{
+    ViewBag.Title = "Profile";
+}
+<h2>Profile</h2>
+<h3>Your Completed Orders</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order Number</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Orders.Reverse())
+        {
+            <tr>
+                <td>@item.Order.Id</td>
+                <td>@item.Order.EmailUsed</td>
+            </tr>
+
+            foreach (var product in @item.Order.Products)
+            {
+                <tr>
+                    @*<td>@item.Order.ShippingAddress</td>*@
+                    <td>@product.Product.Name</td>
+                    <td>@((product.Product.Price ?? 0m).ToString("C"))</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -1,12 +1,16 @@
 ﻿<ul class="nav navbar-nav navbar-right">
-    <li><a href="/cart"><span class="badge">@(ViewBag.ItemsInCart ?? 0)</span><span class="glyphicon glyphicon-shopping-cart"></span>Cart</a></li>
+    <li class="header-title-links">
+        <a href="/cart" style="color: #C13628; font-size: 1em;">@*<span class="badge">@(ViewBag.ItemsInCart ?? 0)</span>*@
+        <span class="glyphicon glyphicon-shopping-cart"></span>Cart</a>
+    </li>
     @if (User.Identity.IsAuthenticated)
     {
-        <li>@Html.ActionLink("Logout as " + User.Identity.Name, "Logout", "MyAccount")</li>
+        <li>@Html.ActionLink("Logout as " + User.Identity.Name, "Logout", "MyAccount", new { area = "" }, new { @class = "navbar-brand header-title-links", @style = "color: #A58C76; font-size: 1em;" }))</li>
+        <li>@Html.ActionLink("Account", "Profile", "Home", new { area = "" }, new { @class = "navbar-brand header-title-links", @style = "color: #A58C76; font-size: 1em;" }))</li>
     }
     else
     {
-        <li>@Html.ActionLink("Login", "Login", "MyAccount")</li>
-        <li>@Html.ActionLink("Register", "Register", "MyAccount")</li>
+        <li>@Html.ActionLink("Login", "Login", "MyAccount", new { area = "" }, new { @class = "navbar-brand header-title-links", @style = "color: #A58C76; font-size: 1em;" }))</li>
+        <li>@Html.ActionLink("Create Account", "Register", "MyAccount", new { area = "" }, new { @class = "navbar-brand header-title-links", @style = "color: #A58C76; font-size: 1em;" }))</li>
     }
 </ul>

@@ -29,3 +29,42 @@
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-xs-6 well">
+        <div>
+            <input type="button" value="Write Review" onclick="location.href='@Url.Action("Create", "Reviews", new { name = Model.Name, id = Model.ID })'" />
+        </div>
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>By:</th>
+            <th>Rating</th>
+            <th>Body</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Reviews.Any())
+        {
+            foreach (var review in Model.Reviews)
+            {
+                <tr>
+                    <td>@review.UserEmail</td>
+                    <td>@review.Rating/10</td>
+                    <td>@review.Body</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td>The Guardians</td>
+                <td>?/10</td>
+                <td>No reviews have been left yet. Be the first to write one!</td>
+            </tr>
+        }
+    </tbody>
+</table>
